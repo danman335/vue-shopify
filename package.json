@@ -1,6 +1,13 @@
 {
   "name": "vue-shopify",
-  "version": "0.0.1",
+  "description": "Vue 3 plugin that wraps and exposes the Shopify Storefront API. Access Storefront API data via $shopify from any component.",
+  "version": "0.0.2",
+  "author": {
+    "name": "Dan Sutherland",
+    "email": "me@dansutherland.co.uk",
+    "url": "https://dansutherland.co.uk"
+  },
+  "licence": "MIT",
   "private": false,
   "type": "module",
   "files": [
@@ -21,10 +28,13 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore"
   },
   "dependencies": {
+    "@apollo/client": "^3.7.7",
     "graphql": "^16.6.0",
+    "graphql-tag": "^2.12.6",
     "vue": "^3.2.45"
   },
   "devDependencies": {
+    "@rollup/plugin-graphql": "^2.0.3",
     "@vitejs/plugin-vue": "^4.0.0",
     "eslint": "^8.22.0",
     "eslint-plugin-vue": "^9.3.0",

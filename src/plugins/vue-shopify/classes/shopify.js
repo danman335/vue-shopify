@@ -1,5 +1,8 @@
+import { ApolloClient, InMemoryCache } from '@apollo/client/core'
+import productById from '../graphql/queries/product.gql'
+
 export default class Shopify {
-  constructor(storefrontApiKey, shopifyStoreName, storefrontApiVersion = '2023-01') {
+  constructor(storefrontApiKey, shopifyStoreName, storefrontApiVersion = '2023-01', country = 'GB', language = 'EN') {
     if (!storefrontApiKey || !shopifyStoreName) {
       throw new Error('Unable to create a Shopify connection')
     }
@@ -8,10 +11,25 @@ export default class Shopify {
     this.storefrontApiKey = storefrontApiKey
     this.shopifyStoreName = shopifyStoreName
     this.storefrontApiVersion = storefrontApiVersion
+    this.country = country.toUpperCase()
+    this.language = language.toUpperCase()
 
     // Set the plugin configs, construct the Shopify request URL.
     this.setShopifyRequestUrl()
-    this.setRequestConfig()
+    this.createShopifyClient()
+  }
+
+  createShopifyClient() {
+    const cache = new InMemoryCache()
+
+    this.shopifyClient = new ApolloClient({
+      uri: this.shopifyRequestUrl,
+      cache,
+      headers: {
+        'X-Shopify-Storefront-Access-Token': this.storefrontApiKey,
+        'Content-Type': 'application/json'
+      }
+    });
   }
 
   /**
@@ -22,44 +40,25 @@ export default class Shopify {
   }
 
   /**
-   * Sets the global fetch request config options.
-   */
-  setRequestConfig() {
-    this.requestConfig = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Shopify-Storefront-Access-Token': this.storefrontApiKey
-      }
-    }
-  }
-
-  /**
    * Makes a test request to the given Shopify store to make sure the connection
    * works.
+   * @param {String} productId - ID of the product to be fetched.
+   * @param {String} country - ISO-2 country code to localise the data to.
+   * @param {String} language - Language code to standardise data to.
    * @returns {Promise} - promise containing Storefront API request data.
    */
-  async test() {
-    const query = `{
-        shop {
-          id
-          name
-          primaryDomain {
-            host
-            url
-          }
-        }
-      }`
-
-
-    try {
-      const response = await fetch(this.shopifyRequestUrl, {
-        ...this.requestConfig,
-        body: JSON.stringify({ query: query })
-      })
-      return response.json()
-    } catch (error) {
-      throw new Error(error)
-    }
+  async productById({
+    productId,
+    country = this.country,
+    language = this.language
+  }) {
+    return this.shopifyClient.query({
+      query: productById,
+      variables: {
+        country,
+        language,
+        id: `gid://shopify/Product/${productId}`
+      }
+    })
   }
 }

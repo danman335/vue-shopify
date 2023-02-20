@@ -9,7 +9,7 @@ export default {
   },
 
   async mounted() {
-    const testData = await this.$shopify.test()
+    const testData = await this.$shopify.productById({'productId':7197012951295})
     console.log({testData})
   }
 }

@@ -1,0 +1,11 @@
+#import "../fragments/product.gql"
+
+query productByHandle (
+  $country: country,
+  $language: language,
+  $handle: handle!
+) @inContext {
+  productByHandle(handle: $handle) {
+    ...product
+  }
+}

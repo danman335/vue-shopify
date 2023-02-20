@@ -1,0 +1,17 @@
+fragment product on Product {
+  availableForSale
+  compareAtPriceRange {
+    minVariantPrice {
+      amount
+      currencyCode
+    }
+    maxVariantPrice {
+      amount
+      currencyCode
+    }
+  }
+  handle
+  id
+  tags
+  title
+}
