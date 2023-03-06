@@ -1,8 +1,15 @@
 import { ApolloClient, InMemoryCache } from '@apollo/client/core'
+import productByHandle from '../graphql/queries/productByHandle.gql'
 import productById from '../graphql/queries/product.gql'
 
 export default class Shopify {
-  constructor(storefrontApiKey, shopifyStoreName, storefrontApiVersion = '2023-01', country = 'GB', language = 'EN') {
+  constructor(
+    storefrontApiKey,
+    shopifyStoreName,
+    storefrontApiVersion = '2023-01',
+    country = 'GB',
+    language = 'EN'
+  ) {
     if (!storefrontApiKey || !shopifyStoreName) {
       throw new Error('Unable to create a Shopify connection')
     }
@@ -40,8 +47,7 @@ export default class Shopify {
   }
 
   /**
-   * Makes a test request to the given Shopify store to make sure the connection
-   * works.
+   * Fetches a product using its product ID.
    * @param {String} productId - ID of the product to be fetched.
    * @param {String} country - ISO-2 country code to localise the data to.
    * @param {String} language - Language code to standardise data to.
@@ -58,6 +64,28 @@ export default class Shopify {
         country,
         language,
         id: `gid://shopify/Product/${productId}`
+      }
+    })
+  }
+
+  /**
+   * Fetches a product using its handle.
+   * @param {String} productId - ID of the product to be fetched.
+   * @param {String} country - ISO-2 country code to localise the data to.
+   * @param {String} language - Language code to standardise data to.
+   * @returns {Promise} - promise containing Storefront API request data.
+   */
+  async productByHandle({
+    productHandle,
+    country = this.country,
+    language = this.language
+  }) {
+    return this.shopifyClient.query({
+      query: productByHandle,
+      variables: {
+        country,
+        language,
+        handle: productHandle
       }
     })
   }
