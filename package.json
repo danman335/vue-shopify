@@ -1,11 +1,26 @@
 {
   "name": "vue-shopify",
   "description": "Vue 3 plugin that wraps and exposes the Shopify Storefront API. Access Storefront API data via $shopify from any component.",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "author": {
     "name": "Dan Sutherland",
     "email": "me@dansutherland.co.uk",
     "url": "https://dansutherland.co.uk"
+  },
+  "keywords": [
+    "vue",
+    "Shopify",
+    "storefront",
+    "storefront API",
+    "Shopify API",
+    "Vue Shopify",
+    "Shopify Vue",
+    "vue-shopify"
+  ],
+  "homepage": "https://github.com/danman335/vue-shopify/",
+  "bugs": {
+    "url": "https://github.com/danman335/vue-shopify/",
+    "email": "me@dansutherland.co.uk"
   },
   "licence": "MIT",
   "private": false,
